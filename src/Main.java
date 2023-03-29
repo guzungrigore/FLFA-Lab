@@ -1,15 +1,17 @@
-import java.util.*;
+import Lexer.Token;
+
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        Set<String> VN = new HashSet<>(Arrays.asList("S", "B", "C", "D"));
-        Set<String> VT = new HashSet<>(Arrays.asList("a", "b", "c"));
-        Map<String, List<String>> productions = new HashMap<>();
-        productions.put("S", Arrays.asList("aB"));
-        productions.put("B", Arrays.asList("bS", "aC", "b"));
-        productions.put("C", Arrays.asList("bD"));
-        productions.put("D", Arrays.asList("a", "bC", "cS"));
-        Grammar grammar = new Grammar(VN, VT, productions, "S");
+//        Set<String> VN = new HashSet<>(Arrays.asList("S", "B", "C", "D"));
+//        Set<String> VT = new HashSet<>(Arrays.asList("a", "b", "c"));
+//        Map<String, List<String>> productions = new HashMap<>();
+//        productions.put("S", Arrays.asList("aB"));
+//        productions.put("B", Arrays.asList("bS", "aC", "b"));
+//        productions.put("C", Arrays.asList("bD"));
+//        productions.put("D", Arrays.asList("a", "bC", "cS"));
+//        Grammar grammar = new Grammar(VN, VT, productions, "S");
 //        List<String> validStrings = grammar.generateValidStrings(5);
 //        System.out.println("valid strings: " + validStrings);
 //
@@ -27,38 +29,52 @@ public class Main {
 //        for (String input : testInputs) {
 //            System.out.println("Input \"" + input + "\" is: " + finiteAutomaton.accepts(input));
 //        }
+//
+//
+//        System.out.println(grammar.classifyGrammar());
+//
+//
+//        Set<String> Q = new HashSet<>(Arrays.asList("q0", "q1", "q2", "q3"));
+//        Set<String> Sigma = new HashSet<>(Arrays.asList("a", "b", "c"));
+//        Map<Pair<String, String>, String> delta = new HashMap<>();
+//        delta.put(new Pair<>("q0", "a"), "q0");
+//        delta.put(new Pair<>("q0", "a"), "q1");
+//        delta.put(new Pair<>("q2", "a"), "q2");
+//        delta.put(new Pair<>("q1", "b"), "q2");
+//        delta.put(new Pair<>("q2", "c"), "q3");
+//        delta.put(new Pair<>("q3", "c"), "q3");
+//        String q0 = "q0";
+//        Set<String> F = new HashSet<>(List.of("q3"));
+//
+//        FA fa = new FA(Q, Sigma, delta, q0, F);
+//
+//        Grammar rg = fa.toRegularGrammar();
+//        System.out.println("Grammar:");
+//        System.out.println(rg);
+//
+//        if (fa.isDeterministic()) {
+//            System.out.println("Deterministic.");
+//        } else {
+//            System.out.println("Non-deterministic.");
+//        }
+//
+//        DFA dfa = fa.toDFA();
+//        System.out.println("DFA:");
+//        System.out.println(dfa);
 
-
-        System.out.println(grammar.classifyGrammar());
-
-
-        Set<String> Q = new HashSet<>(Arrays.asList("q0", "q1", "q2", "q3"));
-        Set<String> Sigma = new HashSet<>(Arrays.asList("a", "b", "c"));
-        Map<Pair<String, String>, String> delta = new HashMap<>();
-        delta.put(new Pair<>("q0", "a"), "q0");
-        delta.put(new Pair<>("q0", "a"), "q1");
-        delta.put(new Pair<>("q2", "a"), "q2");
-        delta.put(new Pair<>("q1", "b"), "q2");
-        delta.put(new Pair<>("q2", "c"), "q3");
-        delta.put(new Pair<>("q3", "c"), "q3");
-        String q0 = "q0";
-        Set<String> F = new HashSet<>(List.of("q3"));
-
-        FA fa = new FA(Q, Sigma, delta, q0, F);
-
-        Grammar rg = fa.toRegularGrammar();
-        System.out.println("Grammar:");
-        System.out.println(rg);
-
-        if (fa.isDeterministic()) {
-            System.out.println("Deterministic.");
-        } else {
-            System.out.println("Non-deterministic.");
+        //String input = "x = 42 + (y - 3) * 2";
+        //String input = "IF x = 10 RETURN (Good Job)";
+        String input = "#";
+        Lexer.Lexer lexer = new Lexer.Lexer(input);
+        List<Token> tokens = null;
+        try {
+            tokens = lexer.tokenize();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-
-        DFA dfa = fa.toDFA();
-        System.out.println("DFA:");
-        System.out.println(dfa);
+        for (Token token : tokens) {
+            System.out.println(token);
+        }
 
     }
 }
