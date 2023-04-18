@@ -1,6 +1,5 @@
-import Lexer.Token;
-
-import java.util.List;
+import java.util.Arrays;
+import java.util.HashMap;
 
 public class Main {
     public static void main(String[] args) {
@@ -62,19 +61,76 @@ public class Main {
 //        System.out.println("DFA:");
 //        System.out.println(dfa);
 
-        //String input = "x = 42 + (y - 3) * 2";
-        //String input = "IF x = 10 RETURN (Good Job)";
-        String input = "#";
-        Lexer.Lexer lexer = new Lexer.Lexer(input);
-        List<Token> tokens = null;
-        try {
-            tokens = lexer.tokenize();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        for (Token token : tokens) {
-            System.out.println(token);
-        }
+//        //String input = "x = 42 + (y - 3) * 2";
+//        String input = "IF x = 10 RETURN (Good Job)";
+//        //String input = "#";
+//        Lexer.Lexer lexer = new Lexer.Lexer(input);
+//        List<Token> tokens = null;
+//        try {
+//            tokens = lexer.tokenize();
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
+//        for (Token token : tokens) {
+//            System.out.println(token);
+//        }
 
+        Chomsky chomsky = new Chomsky("S",
+                Arrays.asList("S", "A", "B", "C", "D"),
+                Arrays.asList("a", "b"),
+                new HashMap<>() {{
+                    put("S", Arrays.asList("aB", "bA", "A"));
+                    put("A", Arrays.asList("B", "Sa", "bBA", "b"));
+                    put("B", Arrays.asList("b", "bS", "aD", "ε"));
+                    put("C", Arrays.asList("Ba"));
+                    put("D", Arrays.asList("AA"));
+                }});
+
+        //System.out.println(chomsky.getProductions());
+        //System.out.println(chomsky.getNonTerminal());
+
+        System.out.println("Original:");
+        chomsky.printGrammar();
+
+        chomsky.eliminateEpsilonProductions();
+        System.out.println("Without Epsilon:");
+        chomsky.printGrammar();
+
+        chomsky.eliminateUnitProductions();
+        System.out.println("Without Unit productions:");
+        chomsky.printGrammar();
+
+        chomsky.eliminateInaccessibleSymbols();
+        System.out.println("Without Inaccessible Symbols:");
+        chomsky.printGrammar();
+
+        chomsky.eliminateNonproductive();
+        System.out.println("Without Nonproductive Characters:");
+        chomsky.printGrammar();
+
+        chomsky.toCnf();
+        System.out.println("Chomsky Normal Form:");
+        chomsky.printGrammar();
+
+
+
+        Chomsky chomsky1 = new Chomsky("S",
+                Arrays.asList("S", "A", "B", "C", "E"),
+                Arrays.asList("a", "b"),
+                new HashMap<>() {{
+                    put("S", Arrays.asList("bA", "B"));
+                    put("A", Arrays.asList("a", "aS", "bAaAb"));
+                    put("B", Arrays.asList("AC", "bS", "aAa"));
+                    put("C", Arrays.asList("ε", "AB"));
+                    put("E", Arrays.asList("BA"));
+                }});
+
+        System.out.println("------------");
+        System.out.println("Original:");
+        chomsky1.printGrammar();
+
+        chomsky1.cfgToCnf();
+        System.out.println("Chomsky Normal Form:");
+        chomsky1.printGrammar();
     }
 }
