@@ -9,7 +9,8 @@ public enum TokenType {
     MINUS,
     MULTIPLY,
     DIVIDE,
-    EQUAL
+    EQUAL,
+    EOF
 }
 
 
